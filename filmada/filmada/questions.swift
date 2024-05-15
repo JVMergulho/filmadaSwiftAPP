@@ -19,7 +19,7 @@ class Question {
 }
 
 struct AgeSelectionView: View {
-    @State var rangeAge: Int = 0
+    @State var rangeAge: Range = .range1
     
     var body: some View {
         VStack{
@@ -39,7 +39,7 @@ struct AgeSelectionView: View {
             Spacer()
             
             Picker("Range", selection: $rangeAge) {
-                ForEach(Size.allCases, id: \.self) { range in
+                ForEach(Range.allCases, id: \.self) { range in
                     Text("\(range.rawValue)")
                         .tag(range)
                 }
@@ -55,6 +55,7 @@ struct AgeSelectionView: View {
 struct QuestionView: View {
     
     @State var buttonColor: Color = .blue
+    @State var buttonColors: [Color] = [.blue, .blue, .blue, .blue]
     let curQuestion: Question
     
     init(curQuestion: Question) {
@@ -64,25 +65,31 @@ struct QuestionView: View {
     var body: some View {
         VStack{
             Text(curQuestion.text)
-                .font(.headline)
+                .font(.header2)
                 .padding()
             
             Spacer()
             
             ForEach(0..<curQuestion.alternatives.count) { index in
                 Button(action: {
-                    buttonColor = .yellow
+                    if buttonColors[index] == .blue{
+                        buttonColors[index] = .yellow
+                    } else{
+                        buttonColors[index] = .blue
+                    }
                     print("Alternativa selecionada: \(curQuestion.alternatives[index])")
                 }) {
-                    Text(curQuestion.alternatives[index])
-                        .font(.body1)
-                        .padding()
-                        .background(buttonColor)
-                        .foregroundColor(.white)
-                        .cornerRadius(16)
-                        .font(.header2)
+                    HStack{
+                        Image(systemName: "a")
+                        Text(curQuestion.alternatives[index])
+                            .padding()
+                    }
                 }
-                .padding(.bottom, 10)
+                .frame(width: 292, height: 61)
+                .background(buttonColors[index])
+                .cornerRadius(16)
+                .foregroundColor(.white)
+                .font(.body1)
             }
         }
         .frame(width: 345, height: 398)

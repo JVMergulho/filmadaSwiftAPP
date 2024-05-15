@@ -43,9 +43,13 @@ struct ContentView: View {
                 }
                 
             }
-            .foregroundColor(.white)
-            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            .navigationTitle("CãoCuladora")
+            .toolbarBackground(
+                .visible,
+                for: .navigationBar)
         }
+        .foregroundColor(.white)
+        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
     }
 }
 
