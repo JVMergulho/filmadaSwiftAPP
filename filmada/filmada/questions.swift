@@ -19,7 +19,7 @@ class Question {
 }
 
 struct AgeSelectionView: View {
-    @State var rangeAge: Range = .range1
+    @Binding var rangeAge: Range?
     
     var body: some View {
         VStack{
@@ -41,59 +41,83 @@ struct AgeSelectionView: View {
             Picker("Range", selection: $rangeAge) {
                 ForEach(Range.allCases, id: \.self) { range in
                     Text("\(range.rawValue)")
-                        .tag(range)
+                        .tag(range as Range?)
                 }
             }
             .padding(.bottom, 110)
         }
         .frame(width: 345, height: 398)
-        .background(.gray)
+        .background(.boxGray)
         .cornerRadius(16.0)
+        .padding(.top, 48)
     }
 }
 
 struct QuestionView: View {
     
-    @State var buttonColor: Color = .blue
-    @State var buttonColors: [Color] = [.blue, .blue, .blue, .blue]
+    @Binding var buttonColors: [Color]
+    @Binding var selectedAlt: Int?
     let curQuestion: Question
     
-    init(curQuestion: Question) {
+    init(curQuestion: Question, buttonColors: Binding<[Color]>, selectedAlt: Binding<Int?>) {
         self.curQuestion = curQuestion
+        self._buttonColors = buttonColors
+        self._selectedAlt = selectedAlt
     }
     
     var body: some View {
         VStack{
             Text(curQuestion.text)
+                .multilineTextAlignment(.center)
                 .font(.header2)
-                .padding()
-            
+                .padding(.top, 27)
+                .padding([.leading, .trailing], 57)
+
             Spacer()
             
-            ForEach(0..<curQuestion.alternatives.count) { index in
-                Button(action: {
-                    if buttonColors[index] == .blue{
-                        buttonColors[index] = .yellow
-                    } else{
-                        buttonColors[index] = .blue
-                    }
-                    print("Alternativa selecionada: \(curQuestion.alternatives[index])")
-                }) {
-                    HStack{
-                        Image(systemName: "a")
-                        Text(curQuestion.alternatives[index])
-                            .padding()
-                    }
-                }
-                .frame(width: 292, height: 61)
-                .background(buttonColors[index])
-                .cornerRadius(16)
-                .foregroundColor(.white)
-                .font(.body1)
+            VStack{
+                ForEach(0..<curQuestion.alternatives.count) { index in
+                                Button(action: {
+                                    if buttonColors[index] == .altGray{
+                                        for idx in 0..<buttonColors.count{
+                                            if buttonColors[idx] == .btActive{
+                                                buttonColors[idx] = .altGray
+                                            }
+                                        }
+                                            
+                                        buttonColors[index] = .btActive
+                                        selectedAlt = index
+                                    } else{
+                                        buttonColors[index] = .altGray
+                                        selectedAlt = nil
+                                    }
+                                    print("Alternativa selecionada: \(curQuestion.alternatives[index])")
+                                }) {
+                                    HStack{
+                                        Image(systemName: "a")
+                                        Text(curQuestion.alternatives[index])
+                                            .padding()
+                                    }
+                                }
+                                .frame(width: 292, height: 61)
+                                .background(buttonColors[index])
+                                .cornerRadius(16)
+                                .foregroundColor(.white)
+                                .font(.body1)
+                            }
             }
+            .padding(.bottom, 38)
+            
         }
         .frame(width: 345, height: 398)
-        .background(.gray)
+        .background(.boxGray)
         .cornerRadius(16.0)
+        .padding(.top, 48)
     }
 }
+
+let auxQuestion = Question(text: "Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Apreendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
+
+//#Preview {
+//    QuestionView(curQuestion: auxQuestion)
+//}
