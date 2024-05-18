@@ -21,6 +21,7 @@ struct ContentView: View {
     
     @State var rangeAge: Range?
     @State var selectedAlt: Int?
+    @State var isTicketVisible: Bool = false
     
     var isDisabled: Bool {
         if pageNumber == 0{
@@ -30,7 +31,7 @@ struct ContentView: View {
         }
     }
     var body: some View {
-        ZStack {
+        ZStack() {
             Color.bg
                 .ignoresSafeArea(.all)
             
@@ -73,14 +74,31 @@ struct ContentView: View {
                     
                     VStack(){
                      
-                        // selecionar o conteúdo da vstack de acordo com pagenumber
-                        if pageNumber == 0{
-                            AgeSelectionView(rangeAge: $rangeAge)
-                        } else if pageNumber <= questions.count {
-                            
-                            QuestionView(curQuestion: questions[pageNumber - 1], buttonColors: $buttonColors, selectedAlt: $selectedAlt)
+                        VStack {
+                            switch pageNumber {
+                            case 0:
+                                AgeSelectionView(rangeAge: $rangeAge)
+                            case 1...questions.count:
+                                QuestionView(
+                                    curQuestion: questions[pageNumber - 1],
+                                    buttonColors: $buttonColors,
+                                    selectedAlt: $selectedAlt
+                                )
+                            default:
+                                QuestionView(
+                                    curQuestion: questions[questions.count - 1],
+                                    buttonColors: $buttonColors,
+                                    selectedAlt: $selectedAlt
+                                )
+                            }
                         }
-                        
+                        .onChange(of: pageNumber) { newValue in
+                                if newValue >= questions.count {
+                                    isTicketVisible = true
+                                    print("TICKETT")
+                                }
+                        }
+
                         Button(action: {
                             pageNumber += 1
                             buttonColors = buttonColorsDefault
@@ -99,10 +117,13 @@ struct ContentView: View {
                 
             }
             .edgesIgnoringSafeArea(.all)
+            
+            if isTicketVisible{
+                TicketView()
+            }
         }
         .foregroundColor(.white)
-        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
