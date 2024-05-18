@@ -8,51 +8,6 @@
 import Foundation
 import SwiftUI
 
-class Question {
-    let text: String
-    let alternatives: [String]
-    
-    init(text: String, alternatives: [String]) {
-        self.text = text
-        self.alternatives = alternatives
-    }
-}
-
-struct AgeSelectionView: View {
-    @Binding var rangeAge: Range?
-    
-    var body: some View {
-        VStack{
-            
-            Text("Selecione sua faixa de idade")
-                .font(.header2)
-                .padding([.top, .leading, .trailing], 27.0)
-            
-            
-            Spacer()
-            
-            Text("Essa informação será importante para que possamos recomendar filmes adequados para você")
-                .font(.body1)
-                .multilineTextAlignment(.center)
-                .padding([.leading, .trailing], 27.0)
-            
-            Spacer()
-            
-            Picker("Range", selection: $rangeAge) {
-                ForEach(Range.allCases, id: \.self) { range in
-                    Text("\(range.rawValue)")
-                        .tag(range as Range?)
-                }
-            }
-            .padding(.bottom, 110)
-        }
-        .frame(width: 345, height: 398)
-        .background(.boxGray)
-        .cornerRadius(16.0)
-        .padding(.top, 48)
-    }
-}
-
 struct QuestionView: View {
     
     @Binding var buttonColors: [Color]
@@ -96,7 +51,9 @@ struct QuestionView: View {
                                     HStack{
                                         Image(systemName: "a")
                                         Text(curQuestion.alternatives[index])
-                                            .padding()
+                                            .lineLimit(3)
+                                            .fixedSize(horizontal: true, vertical: false)
+                                            .frame(width: 167, height: 61)
                                     }
                                 }
                                 .frame(width: 292, height: 61)
@@ -112,11 +69,9 @@ struct QuestionView: View {
         .frame(width: 345, height: 398)
         .background(.boxGray)
         .cornerRadius(16.0)
-        .padding(.top, 48)
+        .padding(.top, 12)
     }
 }
-
-let auxQuestion = Question(text: "Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Apreendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
 
 //#Preview {
 //    QuestionView(curQuestion: auxQuestion)

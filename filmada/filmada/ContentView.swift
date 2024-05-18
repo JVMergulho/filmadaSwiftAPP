@@ -53,33 +53,49 @@ struct ContentView: View {
                         
                         Text("O filme perfeito para seu mood")
                             .font(.header2)
-                            .padding(.top, 27)
-                            .padding(.bottom, 30)
+                            .padding(.vertical, 25)
                     }
-                }
+                }.frame(height: 175)
                 
-                VStack(){
-                    // selecionar o conteúdo da vstack de acordo com pagenumber
-                    if pageNumber == 0{
-                        AgeSelectionView(rangeAge: $rangeAge)
-                    } else if pageNumber <= questions.count {
-                        
-                        QuestionView(curQuestion: questions[pageNumber - 1], buttonColors: $buttonColors, selectedAlt: $selectedAlt)
-                    }
+                VStack(alignment: .leading) {
                     
                     Button(action: {
-                        pageNumber += 1
-                        buttonColors = buttonColorsDefault
-                        selectedAlt = nil
+                        if pageNumber > 0{
+                            pageNumber -= 1
+                        }
                     }){
-                        Text("Próximo")
-                            .frame(width: 163, height: 64)
-                            .background(isDisabled ? .btInactive : .btActive)
-                            .cornerRadius(10.0)
+                        Image(systemName: "arrow.backward")
+                                                .resizable()
+                                                .frame(width: 16, height: 16)
+                                                .foregroundColor( pageNumber == 0 ? .bg : .white)
                     }
-                    .padding(.top, 48)
-                    .disabled(isDisabled)
+                    
+                    
+                    VStack(){
+                     
+                        // selecionar o conteúdo da vstack de acordo com pagenumber
+                        if pageNumber == 0{
+                            AgeSelectionView(rangeAge: $rangeAge)
+                        } else if pageNumber <= questions.count {
+                            
+                            QuestionView(curQuestion: questions[pageNumber - 1], buttonColors: $buttonColors, selectedAlt: $selectedAlt)
+                        }
+                        
+                        Button(action: {
+                            pageNumber += 1
+                            buttonColors = buttonColorsDefault
+                            selectedAlt = nil
+                        }){
+                            Text("Próximo")
+                                .frame(width: 163, height: 64)
+                                .background(isDisabled ? .btInactive : .btActive)
+                                .cornerRadius(10.0)
+                        }
+                        .padding(.top, 48)
+                        .disabled(isDisabled)
+                    }
                 }
+                .padding(.top, 12)
                 
             }
             .edgesIgnoringSafeArea(.all)
