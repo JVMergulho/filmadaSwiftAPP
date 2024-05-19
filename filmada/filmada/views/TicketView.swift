@@ -10,10 +10,16 @@ import SwiftUI
 struct TicketView: View {
     
     @State var movieTitle: String = "Cidade de Deus"
+    @Binding var isTicketVisible: Bool
+    
+    init(isTicketVisible: Binding<Bool>) {
+        self._isTicketVisible = isTicketVisible
+    }
     
     var body: some View {
         
         ZStack{
+            
             Image(.ticket)
                 .resizable()
                 .frame(width: 394, height: 798)
@@ -43,7 +49,7 @@ struct TicketView: View {
                 
                 HStack{
                     Button(action: {
-                        // Ação do botão
+                        isTicketVisible = false
                     }) {
                         Text("Refazer")
                             .frame(width: 112, height: 50)
@@ -59,7 +65,7 @@ struct TicketView: View {
                     Spacer()
                     
                     Button(action: {
-                        
+                        isTicketVisible = false
                     }){
                         Text("Outra Sugestão")
                     }
@@ -71,10 +77,11 @@ struct TicketView: View {
                 .frame(width: 248)
             }
         }
+        .frame(width: .infinity, height: .infinity)
         .foregroundColor(.white)
     }
 }
 
-#Preview {
-    TicketView()
-}
+//#Preview {
+//    TicketView()
+//}

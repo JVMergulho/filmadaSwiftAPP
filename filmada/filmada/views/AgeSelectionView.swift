@@ -43,6 +43,7 @@ struct AgeSelectionView: View {
         .frame(width: 345, height: 398)
         .background(.boxGray)
         .cornerRadius(16.0)
+        .shadow(color: .black, radius: 8, x: 0, y: 4)
         .padding(.top, 12)
     }
 }

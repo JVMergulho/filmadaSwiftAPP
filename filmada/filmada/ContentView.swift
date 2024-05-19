@@ -9,11 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     
+//    let questions: [Question] = [
+//        Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
+//        Question(text: "2- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Noite de sexta", "Monge budista"]),
+//        Question(text: "3- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
+//    ]
+    
     let questions: [Question] = [
-        Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
-        Question(text: "2- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Noite de sexta", "Monge budista"]),
-        Question(text: "3- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
-    ]
+            Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"])]
     
     @State var pageNumber: Int = 0
     @State var buttonColors: [Color] = [.altGray, .altGray, .altGray, .altGray]
@@ -73,7 +76,7 @@ struct ContentView: View {
                     
                     
                     VStack(){
-                     
+                        
                         VStack {
                             switch pageNumber {
                             case 0:
@@ -93,12 +96,12 @@ struct ContentView: View {
                             }
                         }
                         .onChange(of: pageNumber) { newValue in
-                                if newValue >= questions.count {
-                                    isTicketVisible = true
-                                    print("TICKETT")
-                                }
+                            if newValue > questions.count {
+                                isTicketVisible = true
+                                pageNumber = questions.count
+                            }
                         }
-
+                        
                         Button(action: {
                             pageNumber += 1
                             buttonColors = buttonColorsDefault
@@ -109,8 +112,30 @@ struct ContentView: View {
                                 .background(isDisabled ? .btInactive : .btActive)
                                 .cornerRadius(10.0)
                         }
-                        .padding(.top, 48)
+                        .shadow(color: Color.black.opacity(isDisabled ? 0 : 1), radius: 8, x: 0, y: 4)
+                        .padding(.top, 40)
                         .disabled(isDisabled)
+                        
+                        HStack{
+                            ForEach(0..<4){ index in
+                                if index < pageNumber{
+                                    Image(.popCorn)
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                } else if index == pageNumber {
+                                    Image(.popCorn)
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                } else {
+                                    Image(.cornKernel)
+                                        .resizable()
+                                        .frame(width: 16, height: 16)
+                                }
+                            }
+                        }
+                        .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                        .padding(.top, 40)
+                        
                     }
                 }
                 .padding(.top, 12)
@@ -119,7 +144,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             
             if isTicketVisible{
-                TicketView()
+                TicketView(isTicketVisible: $isTicketVisible)
             }
         }
         .foregroundColor(.white)
