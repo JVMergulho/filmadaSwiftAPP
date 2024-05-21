@@ -9,22 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     
-//    let questions: [Question] = [
-//        Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
-//        Question(text: "2- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Noite de sexta", "Monge budista"]),
-//        Question(text: "3- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
-//    ]
-    
     let questions: [Question] = [
-            Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"])]
+        Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
+        Question(text: "2- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"]),
+        Question(text: "3- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
+    ]
+    
+    @State var answers: [Int]
+    @State var buttonColors: [Color] = Array(repeating: .altGray, count: 4)
+    let buttonColorsDefault: [Color] = Array(repeating: .altGray, count: 4)
     
     @State var pageNumber: Int = 0
-    @State var buttonColors: [Color] = [.altGray, .altGray, .altGray, .altGray]
-    let buttonColorsDefault: [Color] = [.altGray, .altGray, .altGray, .altGray]
-    
     @State var rangeAge: Range?
     @State var selectedAlt: Int?
     @State var isTicketVisible: Bool = false
+    @State var reDo: Bool = false
+    
+    init() {
+        self._answers = State(initialValue: Array(repeating: 0, count: questions.count + 1))
+    }
     
     var isDisabled: Bool {
         if pageNumber == 0{
@@ -45,21 +48,36 @@ struct ContentView: View {
                         .fill(.blueHeader)
                         .frame(height: 180)
                         .cornerRadius(60)
-                    VStack{
-                        HStack{
-                            Text("Filmada")
-                                .font(.display)
-                            Image(systemName: "movieclapper.fill")
-                                .resizable()
-                                .frame(width: 24, height: 25)
-                        }
-                        .padding(.top, 68)
+                    HStack {
+                        VStack(){
+                            HStack{
+                                Text("Filmada")
+                                    .font(.display)
+                                Image(systemName: "movieclapper.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 25)
+                            }
+                            .padding(.top, 68)
+                            
+                            Text("O filme perfeito para seu mood")
+                                .font(.header1)
+                                .padding(.vertical, 12)
+                        }.padding(.leading, 40)
                         
-                        Text("O filme perfeito para seu mood")
-                            .font(.header2)
-                            .padding(.vertical, 25)
+                        Button(action: {
+                            
+                        }){
+                            Circle()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.btActive)
+                                .overlay(
+                                    Text("?")
+                                        .bold()
+                                )
+                        }
                     }
-                }.frame(height: 175)
+                }
+                .frame(width: .infinity, height: 175)
                 
                 VStack(alignment: .leading) {
                     
@@ -100,6 +118,23 @@ struct ContentView: View {
                                 isTicketVisible = true
                                 pageNumber = questions.count
                             }
+                            
+                            print(answers)
+                        }
+                        .onChange(of: selectedAlt) { newValue in
+                            if let selectedAlt{
+                                answers[pageNumber] = selectedAlt
+                            }
+                        }
+                        .onChange(of: rangeAge) { newValue in
+                            if let rangeAge{
+                                answers[0] = Range.allCases.firstIndex(of: rangeAge)!
+                            }
+                        }.onChange(of: reDo){
+                            if reDo{
+                                reDo = false
+                                pageNumber = 0
+                            }
                         }
                         
                         Button(action: {
@@ -117,7 +152,7 @@ struct ContentView: View {
                         .disabled(isDisabled)
                         
                         HStack{
-                            ForEach(0..<4){ index in
+                            ForEach(0..<questions.count + 1){ index in
                                 if index < pageNumber{
                                     Image(.popCorn)
                                         .resizable()
@@ -144,7 +179,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             
             if isTicketVisible{
-                TicketView(isTicketVisible: $isTicketVisible)
+                TicketView(isTicketVisible: $isTicketVisible, reDo: $reDo)
             }
         }
         .foregroundColor(.white)

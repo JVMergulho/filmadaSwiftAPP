@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8151E47C2BF2839100B7F0A8 /* filmadaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8151E47B2BF2839100B7F0A8 /* filmadaApp.swift */; };
+		8151E47C2BF2839100B7F0A8 /* FilmadaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8151E47B2BF2839100B7F0A8 /* FilmadaApp.swift */; };
 		8151E47E2BF2839100B7F0A8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8151E47D2BF2839100B7F0A8 /* ContentView.swift */; };
 		8151E4802BF2839300B7F0A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8151E47F2BF2839300B7F0A8 /* Assets.xcassets */; };
 		8151E4832BF2839300B7F0A8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8151E4822BF2839300B7F0A8 /* Preview Assets.xcassets */; };
@@ -17,11 +17,13 @@
 		816B89D22BF8519A00244080 /* QuestionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B89D12BF8519A00244080 /* QuestionClass.swift */; };
 		816B89D42BF851C000244080 /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B89D32BF851C000244080 /* StyleGuide.swift */; };
 		816B89D62BF8534900244080 /* TicketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B89D52BF8534900244080 /* TicketView.swift */; };
+		816B8A002BFBCC7500244080 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B89FF2BFBCC7500244080 /* Movie.swift */; };
+		816B8A022BFD189D00244080 /* Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B8A012BFD189D00244080 /* Truncate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8151E4782BF2839100B7F0A8 /* filmada.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = filmada.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8151E47B2BF2839100B7F0A8 /* filmadaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filmadaApp.swift; sourceTree = "<group>"; };
+		8151E47B2BF2839100B7F0A8 /* FilmadaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmadaApp.swift; sourceTree = "<group>"; };
 		8151E47D2BF2839100B7F0A8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8151E47F2BF2839300B7F0A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8151E4822BF2839300B7F0A8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -31,6 +33,8 @@
 		816B89D12BF8519A00244080 /* QuestionClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionClass.swift; sourceTree = "<group>"; };
 		816B89D32BF851C000244080 /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 		816B89D52BF8534900244080 /* TicketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketView.swift; sourceTree = "<group>"; };
+		816B89FF2BFBCC7500244080 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		816B8A012BFD189D00244080 /* Truncate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Truncate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +69,8 @@
 			children = (
 				816B89CC2BF7D34E00244080 /* views */,
 				816B89CB2BF7D33A00244080 /* utils */,
-				8151E47B2BF2839100B7F0A8 /* filmadaApp.swift */,
+				8151E47B2BF2839100B7F0A8 /* FilmadaApp.swift */,
+				816B89FF2BFBCC7500244080 /* Movie.swift */,
 				8151E47D2BF2839100B7F0A8 /* ContentView.swift */,
 				8151E47F2BF2839300B7F0A8 /* Assets.xcassets */,
 				8151E4812BF2839300B7F0A8 /* Preview Content */,
@@ -87,6 +92,7 @@
 				8151E48F2BF3FCD700B7F0A8 /* Range.swift */,
 				816B89D12BF8519A00244080 /* QuestionClass.swift */,
 				816B89D32BF851C000244080 /* StyleGuide.swift */,
+				816B8A012BFD189D00244080 /* Truncate.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -173,10 +179,12 @@
 			files = (
 				816B89D02BF8516500244080 /* QuestionView.swift in Sources */,
 				816B89D42BF851C000244080 /* StyleGuide.swift in Sources */,
+				816B8A002BFBCC7500244080 /* Movie.swift in Sources */,
+				816B8A022BFD189D00244080 /* Truncate.swift in Sources */,
 				816B89D62BF8534900244080 /* TicketView.swift in Sources */,
 				8151E47E2BF2839100B7F0A8 /* ContentView.swift in Sources */,
 				816B89D22BF8519A00244080 /* QuestionClass.swift in Sources */,
-				8151E47C2BF2839100B7F0A8 /* filmadaApp.swift in Sources */,
+				8151E47C2BF2839100B7F0A8 /* FilmadaApp.swift in Sources */,
 				816B89CE2BF8513900244080 /* AgeSelectionView.swift in Sources */,
 				8151E4902BF3FCD700B7F0A8 /* Range.swift in Sources */,
 			);

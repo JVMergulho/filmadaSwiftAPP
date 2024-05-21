@@ -15,3 +15,16 @@ enum Range: String, CaseIterable{
     case range5 = "16 - 18"
     case range6 = "Acima de 18"
 }
+
+enum Language: String, CaseIterable{
+    case lang1 = "Português"
+    case lang2 = "Inglês"
+    case lang3 = "Espanhol"
+    case lang4 = "Francês"
+    case lang5 = "Italiano"
+    case lang6 = "Alemão"
+    case lang7 = "Russo"
+    case lang8 = "Mandarim"
+    case lang9 = "Japonês"
+    case lang10 = "Coreano"
+}

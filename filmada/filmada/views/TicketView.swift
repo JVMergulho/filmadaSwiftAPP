@@ -9,11 +9,13 @@ import SwiftUI
 
 struct TicketView: View {
     
-    @State var movieTitle: String = "Cidade de Deus"
+    @State var myMovie: Movie?
     @Binding var isTicketVisible: Bool
+    @Binding var reDo: Bool
     
-    init(isTicketVisible: Binding<Bool>) {
+    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>) {
         self._isTicketVisible = isTicketVisible
+        self._reDo = reDo
     }
     
     var body: some View {
@@ -30,16 +32,28 @@ struct TicketView: View {
                         .font(.header1)
                         .padding(.bottom, 30)
                     
-                    Rectangle()
+                    if let myMovie {
+                        AsyncImage(url: myMovie.posterURL, content: { $0 }, placeholder: { Image(systemName: "photo")})
                         .frame(width: 180, height: 180)
                         .cornerRadius(24)
                         .padding(.bottom, 30)
-                    
-                    Text(movieTitle)
-                        .font(.header1)
-                    
-                    Text("2002 | 2:15h | +16")
-                        .font(.body1)
+                        Text(myMovie.title)
+                            .font(.header1)
+                        
+                        HStack{
+                            Text(myMovie.releaseDate.split(separator: "-")[0])
+                            Text("|")
+                            Text(String(format: "%.2f", myMovie.voteAverage))
+                            Image(systemName: "star.fill")
+                                .frame(width: 16, height: 16)
+                        }
+                        
+                        Spacer()
+                        
+                        Text(myMovie.overview!.truncated(to: 150))
+                    } else {
+                        ProgressView("loading...")
+                    }
                 }
                 .padding(.top, 67)
                 .frame(width: 224)
@@ -50,6 +64,7 @@ struct TicketView: View {
                 HStack{
                     Button(action: {
                         isTicketVisible = false
+                        reDo = true
                     }) {
                         Text("Refazer")
                             .frame(width: 112, height: 50)
@@ -60,7 +75,6 @@ struct TicketView: View {
                                     .stroke(.btActive, lineWidth: 2)
                             )
                     }
-
                     
                     Spacer()
                     
@@ -77,8 +91,15 @@ struct TicketView: View {
                 .frame(width: 248)
             }
         }
-        .frame(width: .infinity, height: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .foregroundColor(.white)
+        .task {
+            await loadMovie()
+        }
+    }
+    
+    func loadMovie() async {
+        myMovie = await getMovie(searchGenre: "Western", searchLang: "pt")
     }
 }
 

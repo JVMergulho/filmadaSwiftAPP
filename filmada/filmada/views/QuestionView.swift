@@ -14,6 +14,8 @@ struct QuestionView: View {
     @Binding var selectedAlt: Int?
     let curQuestion: Question
     
+    let letters = ["A", "B", "C", "D"]
+    
     init(curQuestion: Question, buttonColors: Binding<[Color]>, selectedAlt: Binding<Int?>) {
         self.curQuestion = curQuestion
         self._buttonColors = buttonColors
@@ -46,10 +48,16 @@ struct QuestionView: View {
                                         buttonColors[index] = .altGray
                                         selectedAlt = nil
                                     }
-                                    print("Alternativa selecionada: \(curQuestion.alternatives[index])")
                                 }) {
                                     HStack{
-                                        Image(systemName: "a")
+                                        Text(letters[index])
+                                            .bold()
+                                            .overlay(
+                                                Circle()
+                                                    .stroke(.white, lineWidth: 1)
+                                                    .scaleEffect(2)
+                                            )
+                                        
                                         Text(curQuestion.alternatives[index])
                                             .lineLimit(3)
                                             .fixedSize(horizontal: true, vertical: false)
