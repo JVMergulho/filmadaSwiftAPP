@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AgeSelectionView: View {
-    @Binding var rangeAge: Range?
+    @Binding var searchLanguage: Language?
     
     var body: some View {
         VStack{
@@ -17,7 +17,6 @@ struct AgeSelectionView: View {
             Text("Selecione sua faixa de idade")
                 .font(.header2)
                 .padding([.top, .leading, .trailing], 27.0)
-            
             
             Spacer()
             
@@ -28,10 +27,10 @@ struct AgeSelectionView: View {
             
             Spacer()
             
-            Picker("Range", selection: $rangeAge) {
-                ForEach(Range.allCases, id: \.self) { range in
-                    Text("\(range.rawValue)")
-                        .tag(range as Range?)
+            Picker("Language", selection: $searchLanguage) {
+                ForEach(Language.allCases, id: \.self) { searchLanguage in
+                    Text("\(searchLanguage.rawValue)")
+                        .tag(searchLanguage as Language?)
                 }
             }
             .frame(width: 292, height: 61)

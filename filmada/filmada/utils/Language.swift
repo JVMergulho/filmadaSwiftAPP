@@ -7,15 +7,6 @@
 
 import Foundation
 
-enum Range: String, CaseIterable{
-    case range1 = "Abaixo de 10"
-    case range2 = "10 - 12"
-    case range3 = "12 - 14"
-    case range4 = "14 - 16"
-    case range5 = "16 - 18"
-    case range6 = "Acima de 18"
-}
-
 enum Language: String, CaseIterable{
     case lang1 = "Português"
     case lang2 = "Inglês"
@@ -28,3 +19,16 @@ enum Language: String, CaseIterable{
     case lang9 = "Japonês"
     case lang10 = "Coreano"
 }
+
+let langCodes: [String: String] = [
+    "Português": "pt",
+    "Inglês": "en",
+    "Espanhol": "es",
+    "Francês": "fr",
+    "Italiano": "it",
+    "Alemão": "de",
+    "Russo": "ru",
+    "Mandarim": "zh",
+    "Japonês": "ja",
+    "Coreano": "ko"
+]

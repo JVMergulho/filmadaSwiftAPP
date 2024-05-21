@@ -67,6 +67,12 @@ func makeQuery(searchGenre: String, searchLang: String) async {
         return
     }
     
+    guard let langCode = langCodes[searchLang] else {
+        print("idioma não encontrado")
+        return
+    }
+
+    
     let baseURL = "https://api.themoviedb.org/3/discover/movie"
     var components = URLComponents(string: baseURL)!
     
@@ -77,7 +83,7 @@ func makeQuery(searchGenre: String, searchLang: String) async {
         URLQueryItem(name: "page", value: "1"),
         URLQueryItem(name: "sort_by", value: "popularity.desc"),
         URLQueryItem(name: "with_genres", value: String(genreCode)),
-        URLQueryItem(name: "with_original_language", value: searchLang)
+        URLQueryItem(name: "with_original_language", value: langCode)
     ]
     components.queryItems = queryItems
 

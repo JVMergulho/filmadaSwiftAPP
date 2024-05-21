@@ -12,10 +12,12 @@ struct TicketView: View {
     @State var myMovie: Movie?
     @Binding var isTicketVisible: Bool
     @Binding var reDo: Bool
+    @Binding var searchLanguage: Language?
     
-    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>) {
+    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>, searchLanguage: Binding<Language?>) {
         self._isTicketVisible = isTicketVisible
         self._reDo = reDo
+        self._searchLanguage = searchLanguage
     }
     
     var body: some View {
@@ -47,10 +49,6 @@ struct TicketView: View {
                             Image(systemName: "star.fill")
                                 .frame(width: 16, height: 16)
                         }
-                        
-                        Spacer()
-                        
-                        Text(myMovie.overview!.truncated(to: 150))
                     } else {
                         ProgressView("loading...")
                     }
@@ -61,31 +59,38 @@ struct TicketView: View {
                 
                 Spacer()
                 
-                HStack{
-                    Button(action: {
-                        isTicketVisible = false
-                        reDo = true
-                    }) {
-                        Text("Refazer")
-                            .frame(width: 112, height: 50)
-                            .cornerRadius(10)
-                            .foregroundColor(.btActive)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.btActive, lineWidth: 2)
-                            )
+                VStack{
+                    
+                    if let myMovie {
+                        Text(myMovie.overview!.truncated(to: 150))
                     }
                     
-                    Spacer()
-                    
-                    Button(action: {
-                        isTicketVisible = false
-                    }){
-                        Text("Outra Sugestão")
+                    HStack{
+                        Button(action: {
+                            isTicketVisible = false
+                            reDo = true
+                        }) {
+                            Text("Refazer")
+                                .frame(width: 112, height: 50)
+                                .cornerRadius(10)
+                                .foregroundColor(.btActive)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.btActive, lineWidth: 2)
+                                )
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            isTicketVisible = false
+                        }){
+                            Text("Outra Sugestão")
+                        }
+                        .frame(width: 112, height: 50)
+                        .background(.btActive)
+                        .cornerRadius(10)
                     }
-                    .frame(width: 112, height: 50)
-                    .background(.btActive)
-                    .cornerRadius(10)
                 }
                 .padding(.bottom, 90)
                 .frame(width: 248)
@@ -99,7 +104,9 @@ struct TicketView: View {
     }
     
     func loadMovie() async {
-        myMovie = await getMovie(searchGenre: "Western", searchLang: "pt")
+        if let searchLanguage{
+            myMovie = await getMovie(searchGenre: "Adventure", searchLang: searchLanguage.rawValue)
+        }
     }
 }
 

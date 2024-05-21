@@ -20,7 +20,7 @@ struct ContentView: View {
     let buttonColorsDefault: [Color] = Array(repeating: .altGray, count: 4)
     
     @State var pageNumber: Int = 0
-    @State var rangeAge: Range?
+    @State var searchLanguage: Language?
     @State var selectedAlt: Int?
     @State var isTicketVisible: Bool = false
     @State var reDo: Bool = false
@@ -31,7 +31,7 @@ struct ContentView: View {
     
     var isDisabled: Bool {
         if pageNumber == 0{
-            rangeAge == nil
+            searchLanguage == nil
         } else {
             selectedAlt == nil
         }
@@ -98,7 +98,7 @@ struct ContentView: View {
                         VStack {
                             switch pageNumber {
                             case 0:
-                                AgeSelectionView(rangeAge: $rangeAge)
+                                AgeSelectionView(searchLanguage: $searchLanguage)
                             case 1...questions.count:
                                 QuestionView(
                                     curQuestion: questions[pageNumber - 1],
@@ -126,9 +126,9 @@ struct ContentView: View {
                                 answers[pageNumber] = selectedAlt
                             }
                         }
-                        .onChange(of: rangeAge) { newValue in
-                            if let rangeAge{
-                                answers[0] = Range.allCases.firstIndex(of: rangeAge)!
+                        .onChange(of: searchLanguage) { newValue in
+                            if let searchLanguage{
+                                answers[0] = Language.allCases.firstIndex(of: searchLanguage)!
                             }
                         }.onChange(of: reDo){
                             if reDo{
@@ -179,7 +179,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             
             if isTicketVisible{
-                TicketView(isTicketVisible: $isTicketVisible, reDo: $reDo)
+                TicketView(isTicketVisible: $isTicketVisible, reDo: $reDo, searchLanguage: $searchLanguage)
             }
         }
         .foregroundColor(.white)
