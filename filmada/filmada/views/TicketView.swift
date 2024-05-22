@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct TicketView: View {
+    @StateObject private var viewModel = MovieViewModel()
     
     @State var myMovie: Movie?
     @Binding var isTicketVisible: Bool
     @Binding var reDo: Bool
     @Binding var searchLanguage: Language?
+    @Binding var answers: [Int]
     
-    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>, searchLanguage: Binding<Language?>) {
+    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>, searchLanguage: Binding<Language?>, answers: Binding<[Int]>) {
         self._isTicketVisible = isTicketVisible
         self._reDo = reDo
         self._searchLanguage = searchLanguage
+        self._answers = answers
     }
     
     var body: some View {
@@ -100,12 +103,28 @@ struct TicketView: View {
         .foregroundColor(.white)
         .task {
             await loadMovie()
+            viewModel.movies.shuffle()
+            myMovie = viewModel.movies[0]
         }
     }
     
     func loadMovie() async {
+        
+        let runTime: Int
+        
         if let searchLanguage{
-            myMovie = await getMovie(searchGenre: "Adventure", searchLang: searchLanguage.rawValue)
+            switch answers[answers.count - 1]{
+                case 0:
+                    runTime = 90
+                case 1:
+                    runTime = 120
+                default:
+                    runTime = 999
+            }
+            
+            await viewModel.makeQuery(searchGenres: ["Action"],
+                                      searchLang: String(searchLanguage.rawValue),
+                                      runTime: runTime)
         }
     }
 }

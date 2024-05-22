@@ -11,8 +11,8 @@ struct ContentView: View {
     
     let questions: [Question] = [
         Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
-        Question(text: "2- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"]),
-        Question(text: "3- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"])
+        Question(text: "2- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"]),
+        Question(text: "3- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"])
     ]
     
     @State var answers: [Int]
@@ -26,7 +26,7 @@ struct ContentView: View {
     @State var reDo: Bool = false
     
     init() {
-        self._answers = State(initialValue: Array(repeating: 0, count: questions.count + 1))
+        self._answers = State(initialValue: Array(repeating: 0, count: questions.count))
     }
     
     var isDisabled: Bool {
@@ -123,14 +123,11 @@ struct ContentView: View {
                         }
                         .onChange(of: selectedAlt) { newValue in
                             if let selectedAlt{
-                                answers[pageNumber] = selectedAlt
+                                answers[pageNumber-1] = selectedAlt
                             }
+                            print(answers)
                         }
-                        .onChange(of: searchLanguage) { newValue in
-                            if let searchLanguage{
-                                answers[0] = Language.allCases.firstIndex(of: searchLanguage)!
-                            }
-                        }.onChange(of: reDo){
+                        .onChange(of: reDo){
                             if reDo{
                                 reDo = false
                                 pageNumber = 0
@@ -179,7 +176,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             
             if isTicketVisible{
-                TicketView(isTicketVisible: $isTicketVisible, reDo: $reDo, searchLanguage: $searchLanguage)
+                TicketView(isTicketVisible: $isTicketVisible, reDo: $reDo, searchLanguage: $searchLanguage, answers: $answers)
             }
         }
         .foregroundColor(.white)
