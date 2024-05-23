@@ -12,7 +12,8 @@ struct ContentView: View {
     let questions: [Question] = [
         Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
         Question(text: "2- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"]),
-        Question(text: "3- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"])
+        Question(text: "3- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"]),
+        Question(text: "4- O que você gostaria de fazer?", alternatives: ["Cantar e dançar", "Viajar no tempo", "Entrar em um duelo", "Resolver um mistério"])
     ]
     
     @State var answers: [Int]
@@ -20,7 +21,7 @@ struct ContentView: View {
     let buttonColorsDefault: [Color] = Array(repeating: .altGray, count: 4)
     
     @State var pageNumber: Int = 0
-    @State var searchLanguage: Language?
+    @State var searchLanguage: Language = .portuguese
     @State var selectedAlt: Int?
     @State var isTicketVisible: Bool = false
     @State var reDo: Bool = false
@@ -77,7 +78,8 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(width: .infinity, height: 175)
+                .frame(maxWidth: .infinity)
+                .frame(height: 175)
                 
                 VStack(alignment: .leading) {
                     

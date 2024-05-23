@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 
 struct AgeSelectionView: View {
-    @Binding var searchLanguage: Language?
+    @Binding var searchLanguage: Language
     
     var body: some View {
         VStack{
             
-            Text("Selecione sua faixa de idade")
+            Text("Selecione o idioma original do filme que você quer assistir")
                 .font(.header2)
                 .padding([.top, .leading, .trailing], 27.0)
             
             Spacer()
             
-            Text("Essa informação será importante para que possamos recomendar filmes adequados para você")
+            Text("Uma dica: permita-se experimentar o cinema de outras partes do mundo")
                 .font(.body1)
                 .multilineTextAlignment(.center)
                 .padding([.leading, .trailing], 27.0)

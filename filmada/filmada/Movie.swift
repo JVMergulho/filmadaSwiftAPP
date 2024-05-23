@@ -36,7 +36,16 @@ struct MovieResponse: Decodable {
 
 class MovieViewModel: ObservableObject {
     @Published var movies: [Movie] = []
-
+    
+    @Published var index: Int = 0
+    
+    var movie: Movie? {
+        guard movies.count > 0  else {
+            return nil
+        }
+        return movies[index % movies.count]
+    }
+    
     private let genreCodes: [String: Int] = [
         "Action": 28,
         "Adventure": 12,
@@ -64,7 +73,7 @@ class MovieViewModel: ObservableObject {
         
         var genres: String = ""
         
-        for index in 0..<searchGenres.count {
+        for index in 0..<searchGenres.count{
             guard let genreCode = genreCodes[searchGenres[index]] else {
                 print("Gênero não encontrado")
                 return
@@ -72,8 +81,10 @@ class MovieViewModel: ObservableObject {
             
             if index == 0 {
                 genres += String(genreCode)
-            } else {
+            } else if index < searchGenres.count - 1{
                 genres += "," + String(genreCode)
+            } else {
+                genres += "|" + String(genreCode)
             }
         }
         

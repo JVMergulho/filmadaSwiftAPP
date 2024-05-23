@@ -10,13 +10,12 @@ import SwiftUI
 struct TicketView: View {
     @StateObject private var viewModel = MovieViewModel()
     
-    @State var myMovie: Movie?
     @Binding var isTicketVisible: Bool
     @Binding var reDo: Bool
-    @Binding var searchLanguage: Language?
+    @Binding var searchLanguage: Language
     @Binding var answers: [Int]
     
-    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>, searchLanguage: Binding<Language?>, answers: Binding<[Int]>) {
+    init(isTicketVisible: Binding<Bool>, reDo: Binding<Bool>, searchLanguage: Binding<Language>, answers: Binding<[Int]>) {
         self._isTicketVisible = isTicketVisible
         self._reDo = reDo
         self._searchLanguage = searchLanguage
@@ -25,8 +24,7 @@ struct TicketView: View {
     
     var body: some View {
         
-        ZStack{
-            
+        ZStack {
             Image(.ticket)
                 .resizable()
                 .frame(width: 394, height: 798)
@@ -34,21 +32,25 @@ struct TicketView: View {
             VStack {
                 VStack{
                     Text("Nós recomendamos o seguinte filme")
+                        .multilineTextAlignment(.center)
                         .font(.header1)
-                        .padding(.bottom, 30)
+                        .lineLimit(nil)
                     
-                    if let myMovie {
-                        AsyncImage(url: myMovie.posterURL, content: { $0 }, placeholder: { Image(systemName: "photo")})
-                        .frame(width: 180, height: 180)
-                        .cornerRadius(24)
-                        .padding(.bottom, 30)
-                        Text(myMovie.title)
+                    if let movie = viewModel.movie {
+                        AsyncImage(url: movie.posterURL, content: { $0 }, placeholder: { Image(systemName: "photo")})
+                            .frame(width: 180, height: 180)
+                            .cornerRadius(24)
+                            .padding(.bottom, 20)
+                        
+                        Text(movie.title)
+                            .multilineTextAlignment(.center)
                             .font(.header1)
+                            .lineLimit(nil)
                         
                         HStack{
-                            Text(myMovie.releaseDate.split(separator: "-")[0])
+                            Text(movie.releaseDate.split(separator: "-")[0])
                             Text("|")
-                            Text(String(format: "%.2f", myMovie.voteAverage))
+                            Text(String(format: "%.2f", movie.voteAverage))
                             Image(systemName: "star.fill")
                                 .frame(width: 16, height: 16)
                         }
@@ -58,20 +60,17 @@ struct TicketView: View {
                 }
                 .padding(.top, 67)
                 .frame(width: 224)
-                .multilineTextAlignment(.center)
-                
-                Spacer()
-                
+                .padding(.bottom, 30)
                 VStack{
                     
-                    if let myMovie {
-                        Text(myMovie.overview!.truncated(to: 150))
+                    if let movie = viewModel.movie {
+                        Text(movie.overview!)
+                            .frame(height: 150)
                     }
                     
                     HStack{
                         Button(action: {
-                            isTicketVisible = false
-                            reDo = true
+                            clear()
                         }) {
                             Text("Refazer")
                                 .frame(width: 112, height: 50)
@@ -83,52 +82,85 @@ struct TicketView: View {
                                 )
                         }
                         
-                        Spacer()
-                        
                         Button(action: {
-                            isTicketVisible = false
-                        }){
+                            viewModel.index += 1
+                        })
+                        {
                             Text("Outra Sugestão")
                         }
                         .frame(width: 112, height: 50)
                         .background(.btActive)
                         .cornerRadius(10)
                     }
+                    .padding(.top, 30)
                 }
                 .padding(.bottom, 90)
                 .frame(width: 248)
             }
         }
+        .padding(.top, 40)
+        .background(.ultraThinMaterial)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .foregroundColor(.white)
         .task {
             await loadMovie()
             viewModel.movies.shuffle()
-            myMovie = viewModel.movies[0]
+            viewModel.index = 0
         }
+        .animation(.easeInOut, value: viewModel.index)
+    }
+    
+    func clear() {
+        isTicketVisible = false
+        reDo = true
     }
     
     func loadMovie() async {
         
         let runTime: Int
+        var searchGenres: [String] = []
         
-        if let searchLanguage{
-            switch answers[answers.count - 1]{
-                case 0:
-                    runTime = 90
-                case 1:
-                    runTime = 120
-                default:
-                    runTime = 999
-            }
-            
-            await viewModel.makeQuery(searchGenres: ["Action"],
-                                      searchLang: String(searchLanguage.rawValue),
-                                      runTime: runTime)
+        
+        switch answers[0]{
+        case 0, 1:
+            searchGenres.append("Drama")
+        default:
+            searchGenres.append("Comedy")
         }
+        
+        switch answers[1]{
+        case 0, 1:
+            searchGenres.append("Adventure")
+        default:
+            searchGenres.append("Romance")
+        }
+        
+        switch answers[2]{
+        case 0:
+            runTime = 90
+        case 1:
+            runTime = 120
+        default:
+            runTime = 999
+        }
+        
+        switch answers[3]{
+        case 0:
+            searchGenres.append("Music")
+        case 1:
+            searchGenres.append("Science Fiction")
+        case 2:
+            searchGenres.append("Western")
+        default:
+            searchGenres.append("Mystery")
+        }
+        
+        await viewModel.makeQuery(searchGenres: searchGenres,
+                                  searchLang: String(searchLanguage.rawValue),
+                                  runTime: runTime)
     }
 }
 
-//#Preview {
-//    TicketView()
-//}
+#Preview {
+    TicketView(isTicketVisible: .constant(true), reDo: .constant(false), searchLanguage: .constant(.portuguese), answers: .constant([3,3,3,3]))
+}
