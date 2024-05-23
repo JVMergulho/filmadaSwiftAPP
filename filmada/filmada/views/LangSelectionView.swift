@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct AgeSelectionView: View {
+struct LangSelectionView: View {
     @Binding var searchLanguage: Language
     
     var body: some View {

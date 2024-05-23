@@ -11,7 +11,7 @@ struct ContentView: View {
     
     let questions: [Question] = [
         Question(text: "1- Como você está hoje?", alternatives: ["Pulando de alegria", "Muito Bem", "Tô ok", "Meio para baixo"]),
-        Question(text: "2- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar debaixo do cobertor"]),
+        Question(text: "2- Quão aventureiro você está?", alternatives: ["Explorador audacioso", "Aprendiz ansioso", "Observador atento", "Quero ficar na cama"]),
         Question(text: "3- Como está o seu nível de paciência?", alternatives: ["Xingando no trânsito", "Fila do banco", "Domingo à tarde", "Monge budista"]),
         Question(text: "4- O que você gostaria de fazer?", alternatives: ["Cantar e dançar", "Viajar no tempo", "Entrar em um duelo", "Resolver um mistério"])
     ]
@@ -25,16 +25,17 @@ struct ContentView: View {
     @State var selectedAlt: Int?
     @State var isTicketVisible: Bool = false
     @State var reDo: Bool = false
-    
+    @State private var showPopover: Bool = false
+
     init() {
         self._answers = State(initialValue: Array(repeating: 0, count: questions.count))
     }
     
     var isDisabled: Bool {
-        if pageNumber == 0{
-            searchLanguage == nil
-        } else {
+        if pageNumber > 0 {
             selectedAlt == nil
+        } else{
+            false
         }
     }
     var body: some View {
@@ -66,7 +67,7 @@ struct ContentView: View {
                         }.padding(.leading, 40)
                         
                         Button(action: {
-                            
+                            self.showPopover = true
                         }){
                             Circle()
                                 .frame(width: 24, height: 24)
@@ -75,6 +76,10 @@ struct ContentView: View {
                                     Text("?")
                                         .bold()
                                 )
+                        }
+                        .alert(isPresented: self.$showPopover) {
+                            
+                            Alert(title: Text("Sobre o APP"), message: Text("\nFilmada é um APP que recomenda filmes com base no seu dia.\nPrimeiro você precisa escolher o idioma original do filme. Após isso, é só responder um pequeno quiz sobre seu humor atual e depois selecionar “Finalizar” para encontrar o seu filme ideal. \n\nDesenvolvido por João Vitor Mergulhão"), dismissButton: .default(Text("Entendi")))
                         }
                     }
                 }
@@ -100,7 +105,7 @@ struct ContentView: View {
                         VStack {
                             switch pageNumber {
                             case 0:
-                                AgeSelectionView(searchLanguage: $searchLanguage)
+                                LangSelectionView(searchLanguage: $searchLanguage)
                             case 1...questions.count:
                                 QuestionView(
                                     curQuestion: questions[pageNumber - 1],
