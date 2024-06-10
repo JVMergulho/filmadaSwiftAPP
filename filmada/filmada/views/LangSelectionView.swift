@@ -16,6 +16,7 @@ struct LangSelectionView: View {
             
             Text("Selecione o idioma original do filme que você quer assistir")
                 .font(.header2)
+                .multilineTextAlignment(.center)
                 .padding([.top, .leading, .trailing], 27.0)
             
             Spacer()
