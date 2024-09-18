@@ -36,8 +36,9 @@ struct MovieResponse: Decodable {
 
 class MovieViewModel: ObservableObject {
     @Published var movies: [Movie] = []
-    
     @Published var index: Int = 0
+    
+    private var APIkey: String = Bundle.main.infoDictionary?["API_KEY"] as? String ?? ""
     
     var movie: Movie? {
         guard movies.count > 0  else {
@@ -46,28 +47,6 @@ class MovieViewModel: ObservableObject {
         return movies[index % movies.count]
     }
     
-    private let genreCodes: [String: Int] = [
-        "Action": 28,
-        "Adventure": 12,
-        "Animation": 16,
-        "Comedy": 35,
-        "Crime": 80,
-        "Documentary": 99,
-        "Drama": 18,
-        "Family": 10751,
-        "Fantasy": 14,
-        "History": 36,
-        "Horror": 27,
-        "Music": 10402,
-        "Mystery": 9648,
-        "Romance": 10749,
-        "Science Fiction": 878,
-        "TV Movie": 10770,
-        "Thriller": 53,
-        "War": 10752,
-        "Western": 37
-    ]
-
     func makeQuery(searchGenres: [String], searchLang: String, runTime: Int) async {
         print("Enviou")
         
@@ -107,12 +86,16 @@ class MovieViewModel: ObservableObject {
             URLQueryItem(name: "with_runtime.lte", value: String(runTime)),
         ]
         components.queryItems = queryItems
-
-        var request = URLRequest(url: components.url!)
+        
+        await fetchMovies(urlComponents: components)
+    }
+    
+    func fetchMovies(urlComponents: URLComponents) async{
+        var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = "GET"
         request.timeoutInterval = 10
         request.setValue("application/json", forHTTPHeaderField: "accept")
-        request.setValue("Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NDY0NGM5ZGE4YzZmZDM2OWM1YjhmOTMyMzczN2JmZSIsInN1YiI6IjY2NGE2ZjA4MGVkZGUyYzEzZGVkMDFmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7OUyhKvVyLuRy4OJZIBvN61PjOhumMcAEPKNX68A9sA", forHTTPHeaderField: "Authorization")
+        request.setValue(APIkey, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -128,6 +111,7 @@ class MovieViewModel: ObservableObject {
         } catch {
             print("Request failed with error: \(error)")
         }
+
     }
 }
 

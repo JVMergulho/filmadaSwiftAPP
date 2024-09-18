@@ -1,0 +1,10 @@
+//
+//  Keys.xcconfig
+//  filmada
+//
+//  Created by João Vitor Lima Mergulhão on 18/09/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NDY0NGM5ZGE4YzZmZDM2OWM1YjhmOTMyMzczN2JmZSIsInN1YiI6IjY2NGE2ZjA4MGVkZGUyYzEzZGVkMDFmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7OUyhKvVyLuRy4OJZIBvN61PjOhumMcAEPKNX68A9sA"
